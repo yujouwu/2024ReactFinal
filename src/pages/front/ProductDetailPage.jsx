@@ -33,8 +33,7 @@ function ProductDetailPage(){
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/product/${productId}`
         );
-        setProduct(response.data.product);
-        console.log('getProduct');      
+        setProduct(response.data.product); 
       } catch (error) {
         console.dir(error);
       } finally{

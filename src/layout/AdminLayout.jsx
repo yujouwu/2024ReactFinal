@@ -48,7 +48,6 @@ function AdminLayout() {
     axios.defaults.headers.common["Authorization"] = token;
 
   useEffect(() => {
-    console.log('AdminLayout useEffect');
     if (!token) {
       return navigate('/admin-login')
     };

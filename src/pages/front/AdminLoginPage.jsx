@@ -58,7 +58,6 @@ function AdminLoginPage(){
     axios.defaults.headers.common["Authorization"] = token;
     try {
       const response = await axios.post(`${BASE_URL}/api/user/check`);
-      console.log('LoginPage 驗證', response);
       return response.data.success;
     } catch (error) {
       console.dir(error);
@@ -68,7 +67,6 @@ function AdminLoginPage(){
   }
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     handleAdminLogin(data)
   })
 
