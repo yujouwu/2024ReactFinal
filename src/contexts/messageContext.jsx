@@ -24,7 +24,7 @@ export const messageReducer = (state, action) => {
         ...initState
       };
     default:
-      state;
+      return state;
   }
 }
 
