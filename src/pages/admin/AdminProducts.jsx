@@ -1,14 +1,15 @@
 // 外部 node_modules 資源
-import { useEffect, useState, useRef, useContext, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // 內部 src 資源
 import Pagination from '../../components/Pagination';
 import ProductModal from "../../components/ProductModal";
-import { MessageContext, handleSuccessMessage, handleErrorMessage } from "../../contexts/messageContext";
-import { LoadingScreenContext } from "../../contexts/loadingScreenContext";
-import { useNavigate } from "react-router-dom";
+import { createAsyncToast } from "../../redux/slice/toastSlice";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -58,7 +59,7 @@ const defaultModalData = {
 };
 
 function AdminProducts(){
-  const { setIsLoadingScreen } = useContext(LoadingScreenContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Modal 相關
@@ -167,7 +168,7 @@ function AdminProducts(){
   const [products, setProducts] = useState([]);
   const getProducts = useCallback(
     async (page = 1) => {
-      setIsLoadingScreen(true);
+      dispatch(setGlobalLoading(true));
       try {
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/admin/products?page=${page}`
@@ -181,9 +182,9 @@ function AdminProducts(){
           navigate('/admin-login')
         }
       } finally {
-        setIsLoadingScreen(false)
+        dispatch(setGlobalLoading(false));
       }
-    }, [navigate, setIsLoadingScreen])
+    }, [navigate, dispatch])
   
 
   const createProduct = async () => {
@@ -213,11 +214,9 @@ function AdminProducts(){
           is_enabled: modalData.is_enabled ? 1 : 0,
         }
       });
-      // alert(response.data.message);
       return response.data;
     } catch (error) {
       console.dir(error);
-      // alert(`更新失敗: ${error.response.data.message}`);
       return error?.response?.data;
     }
   }
@@ -225,16 +224,11 @@ function AdminProducts(){
   const deleteProduct = async () => {
     try {
       const response = await axios.delete(`${BASE_URL}/api/${API_PATH}/admin/product/${modalData.id}`);
-      // alert(response.data.message);
       return response.data;
     } catch (error) {
-      console.dir(error);
-      // alert(`更新失敗: ${error.response.data.message}`);
       return error?.response?.data;
     }
   }
-
-  const [, dispatch] = useContext(MessageContext);
 
   const handleProductModalAction = async () => {
     const actionMap = {
@@ -252,11 +246,11 @@ function AdminProducts(){
     const { success, message} = await action();
   
     if (success) {
-      handleSuccessMessage(dispatch, message);
+      dispatch(createAsyncToast({success, message}))
       closeModal();
       getProducts();
     }else{
-      handleErrorMessage(dispatch, message);
+      dispatch(createAsyncToast({success, message}))
     }
   };
 

@@ -1,11 +1,17 @@
 import { NavLink } from 'react-router-dom';
-import { useContext } from 'react';
+// import { useContext } from 'react';
 
 import logo from '../../assets/img/Strawberry cake icons created by Mihimihi - Flaticon.png';
-import { CartContext } from '../../contexts/cartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { asyncGetCart } from '../../redux/slice/cartSlice';
+// import { CartContext } from '../../contexts/cartContext';
 
 function Navbar(){
-  const { basketQty } = useContext(CartContext);
+  // const { basketQty } = useContext(CartContext);
+  const { basketQty } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
   const routes = [
     {
       path: '/products',
@@ -20,6 +26,10 @@ function Navbar(){
       name: 'Admin'
     },
   ]
+
+  useEffect(() => {
+    dispatch(asyncGetCart());
+  }, [dispatch])
 
   return (
     <>

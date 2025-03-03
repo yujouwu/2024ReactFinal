@@ -1,24 +1,28 @@
 // 外部 node_modules 資源
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 // 內部 src 資源
 import Input from "../../components/form/Input";
 import Textarea from "../../components/form/Textarea";
 import CheckboxRadio from "../../components/form/CheckboxRadio";
-import { CartContext } from "../../contexts/cartContext";
-import { LoadingScreenContext } from "../../contexts/loadingScreenContext";
 import EmptyBasket from "../../components/front/emptyBasket";
+import { asyncGetCart } from "../../redux/slice/cartSlice";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { createAsyncToast } from "../../redux/slice/toastSlice";
+
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 function CheckoutPage() {
-  const { cart, basketQty, getCart } = useContext(CartContext);
-  const { setIsLoadingScreen } = useContext(LoadingScreenContext);
+  const dispatch = useDispatch();
+  const {basketQty, ...cart} = useSelector((state) => state.cart);
+
   const navigate = useNavigate();
 
   // React hook form
@@ -48,25 +52,24 @@ function CheckoutPage() {
 
   // 客戶購物 - 結帳
   const checkout = async (data) => {
-    setIsLoadingScreen(true);
+    dispatch(setGlobalLoading(true));
     try {
       const url = `${BASE_URL}/api/${API_PATH}/order`;
       const response = await axios.post(url, data);
-      // console.log(response);
-
       alert(response.data.message);
       navigate(`/success/${response.data.orderId}`);
     } catch (error) {
       console.dir(error);
       alert(error.response.data.message);
+      dispatch(createAsyncToast(error.response.data))
     } finally {
-      setIsLoadingScreen(false);
+      dispatch(setGlobalLoading(false));
     }
   };
 
   useEffect(() => {
-    getCart();
-  }, [getCart]);
+    dispatch(asyncGetCart())
+  }, [dispatch]);
 
   return (
     <>

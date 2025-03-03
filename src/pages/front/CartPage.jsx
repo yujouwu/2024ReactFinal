@@ -1,20 +1,77 @@
 // 外部 node_modules 資源
-import { useContext, useEffect} from "react";
+import { useEffect} from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 // 內部 src 資源
-import { CartContext } from "../../contexts/cartContext";
+// import { CartContext } from "../../contexts/cartContext";
 import EmptyBasket from "../../components/front/emptyBasket";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncGetCart } from "../../redux/slice/cartSlice";
+import { createAsyncToast } from "../../redux/slice/toastSlice";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
 
 // 環境變數
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_PATH = import.meta.env.VITE_API_PATH;
 
 function CartPage(){
-  const {cart, basketQty, getCart, updateCart, deleteCartAll, deleteCartOne} = useContext(CartContext);
-  
-  useEffect(() => {
-    getCart();
-  }, [getCart])
+  const dispatch = useDispatch();
+  const {basketQty, ...cart} = useSelector((state) => state.cart);
 
+  // 更新商品數量
+  const updateCart = async(cartId, productId, qty) => {
+    dispatch(setGlobalLoading(true))
+    try {
+      qty = Number(qty);
+      if (isNaN(qty) || qty < 1) qty = 1;
+      const url = `${BASE_URL}/api/${API_PATH}/cart/${cartId}`;
+      const data = {
+        "data": {
+          "product_id": productId,
+          "qty": qty
+        }
+      }
+      await axios.put(url, data);
+      dispatch(asyncGetCart());
+    } catch (error) {
+      dispatch(createAsyncToast(error.response.data))
+    } finally{
+      dispatch(setGlobalLoading(false))
+    }
+  }
+
+  // 刪除購物車 (全部)
+  const deleteCartAll = async() => {
+    dispatch(setGlobalLoading(true))
+    try {
+      const url = `${BASE_URL}/api/${API_PATH}/carts`;
+      await axios.delete(url);
+      dispatch(asyncGetCart());
+    } catch (error) {
+      dispatch(createAsyncToast(error.response.data))
+    } finally{
+      dispatch(setGlobalLoading(false))
+    }
+  }
+
+  // 刪除購物車 (單一)
+  const deleteCartOne = async(cartId) => {
+    dispatch(setGlobalLoading(true))
+    try {
+      const url = `${BASE_URL}/api/${API_PATH}/cart/${cartId}`;
+      await axios.delete(url);
+      dispatch(asyncGetCart());
+    } catch (error) {
+      dispatch(createAsyncToast(error.response.data))
+    } finally{
+      dispatch(setGlobalLoading(false))
+    }
+  }
+
+  useEffect(() => {
+    dispatch(asyncGetCart());
+  }, [dispatch])
   return (
     <>
       {/* cart */}

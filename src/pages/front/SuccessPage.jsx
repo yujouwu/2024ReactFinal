@@ -1,34 +1,41 @@
 // 外部資源
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { asyncGetCart } from "../../redux/slice/cartSlice";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { createAsyncToast } from "../../redux/slice/toastSlice";
 
 // 內部資源
-import { CartContext } from "../../contexts/cartContext";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 function SuccessPage(){
+  const dispatch = useDispatch();
+
   const { orderId } = useParams();
   const [orderData, setOrderData] = useState({});
   const [orderDataProducts, setOrderDataProducts] = useState([]);
 
-  const { getCart } = useContext(CartContext);
 
   const getOrder = useCallback(
     async(orderId) => {
+      dispatch(setGlobalLoading(true))
       try {
         const url = `${BASE_URL}/api/${API_PATH}/order/${orderId}`;
         const response = await axios.get(url);
         setOrderData(response.data.order);
         setOrderDataProducts(Object.values(response.data.order.products));
-        getCart();
+        dispatch(asyncGetCart())
       } catch (error) {
-        console.dir(error)
+        dispatch(createAsyncToast(error.response.data))
+      } finally {
+        dispatch(setGlobalLoading(false))
       }
-    }, [getCart]) 
+    }, [dispatch]) 
 
   useEffect(() => {
     getOrder(orderId);

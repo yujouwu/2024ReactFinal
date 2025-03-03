@@ -3,16 +3,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Input from "../../components/form/Input";
-import { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
 
 // 內部 src 資源
-import { LoadingScreenContext } from "../../contexts/loadingScreenContext";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function AdminLoginPage(){
-  const { setIsLoadingScreen } = useContext(LoadingScreenContext);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const {
     register,
@@ -29,7 +30,7 @@ function AdminLoginPage(){
 
   const handleAdminLogin = async (data) => {
     // e.preventDefault();
-    setIsLoadingScreen(true)
+    dispatch(setGlobalLoading(true))
     try {
       const response = await axios.post(`${BASE_URL}/admin/signin`, data);
       const { expired, token } = response.data;
@@ -45,7 +46,7 @@ function AdminLoginPage(){
       console.dir(error);
       alert(`登入失敗: ${error.response.data.error.message}`);
     } finally {
-      setIsLoadingScreen(false)
+      dispatch(setGlobalLoading(false))
     }
   };
 

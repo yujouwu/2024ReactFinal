@@ -1,40 +1,37 @@
--OJVG-duDTn6-rgdeBG6
+安裝 Redux toolkit 及 react-redux V 
 
-# 安裝 react router => npm i react-router-dom@6 V
+建立吐司元件 V
 
-# 路由設定
-1. 建立 router 與撰寫路由表（先寫首頁即可），副檔名要是 .jsx V 
-2. 在 main.jsx 下 return RouterProvider，記得將 router 作為 props 傳入 V 
+建立 slice V
+1.  /src/redux
+2. 新增 slice 檔案
+3. 匯出 slice.reducer
 
-前台頁面
+建立 store V
+1. 在 /src 下新增 redux 資料夾
+2. 新增 store.js 檔案
+3. 匯入 slice
+4. 透過 configureStore 設定 reducer
+5. 匯出 store
 
-- 首頁 V 
-- 產品頁 V 
-- 產品詳細頁 V 
-- 購物車 V 
-- 建立訂單成功 - 前往付款（自行練習） V
-- 付款成功（自行練習） V
+使用 store V
+1. 在 main.jsx 下 import Provider
+2. 匯入 store 作為 Provider 的 props 傳入
 
-# 加入導覽列（Layout
-建立 FrontendLayout V
-在 layout 放置 Outlet 元件 V
+透過 slice 內的狀態、方法控制吐司的訊息及開關 
+1. 取得 slice 中的 messages V
+2. 調整 Toast 元件，使用 messages 渲染資料以及 className  V
+3. 透過 messages 建立 Toast 實例，建立完馬上呼叫 show() 開啟吐司 X
 
-將導覽列的 a 標籤換成 NavLink V
+在 API 回傳後透過 slice 設定的 action 新增吐司訊息（通知使用者結果）
+前置作業：在 slice 設定 reducers，並將 actions 解構後匯出 (pushMessage) V
+1. 匯入 action 及 useDispatch V
+2. 在通知使用者的地方透過 dispatch action 完成通知 V
 
-# 拆分元件並撰寫路由表 
-- 產品頁 V
-- 產品詳細頁 V
-- 購物車 V
+刪除舊的吐司訊息
+1. 設定 2 秒後刪除（需撰寫刪除方法與按鈕共用） V
+2. 在 slice 設定 reducers，並將 actions 解構後匯出 (removeMessage) V
 
-## 產品頁
-- 產品頁的查看更多，點擊後會跳轉到產品詳細頁，不需要原本的 handleSeeMore V
-
-## 產品詳細頁
-建立 ProudctDetailPage.jsx V 
-取得單一產品 API V
-透過 useParams 拿到路由的 id V
-
-## 購物車
-建立 CartPage.jsx  V
-
-404 頁面 V
+登出功能
+1. 戳[登出 API](https://hexschool.github.io/ec-courses-api-swaggerDoc/#/%E7%99%BB%E5%85%A5%E5%8F%8A%E9%A9%97%E8%AD%89/post_v2_logout)  V
+2. navigate 將使用者導到登入頁  V

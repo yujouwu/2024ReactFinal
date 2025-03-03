@@ -1,10 +1,12 @@
 import ReactLoading from 'react-loading';
+import { useSelector } from 'react-redux';
 
-function LoadingScreen({isLoadingScreen}){
+function Loading(){
+  const { globalLoading } = useSelector((state) => state.loading) 
   return (
     <>
         {
-          isLoadingScreen && (
+          globalLoading && (
             <div
               className="d-flex justify-content-center align-items-center"
               style={{
@@ -21,4 +23,4 @@ function LoadingScreen({isLoadingScreen}){
     </>
   )
 }
-export default LoadingScreen
+export default Loading

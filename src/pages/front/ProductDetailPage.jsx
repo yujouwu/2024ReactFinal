@@ -1,11 +1,13 @@
 // 外部 node_modules 資源
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
 // 內部 src 資源
-import { CartContext } from "../../contexts/cartContext";
-import { LoadingScreenContext } from "../../contexts/loadingScreenContext";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncAddCart } from "../../redux/slice/cartSlice";
+import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { createAsyncToast } from "../../redux/slice/toastSlice";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -13,8 +15,8 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 
 function ProductDetailPage(){
-  const { addCart, isLoading } = useContext(CartContext);
-  const { setIsLoadingScreen } = useContext(LoadingScreenContext);
+  const dispatch = useDispatch();
+  // const { actionLoading } = useSelector((state) => state.loading)
 
   const [product, setProduct] = useState({});
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
@@ -28,19 +30,19 @@ function ProductDetailPage(){
   const getProduct = useCallback(
     async (productId) => {
       setIsLoadingProduct(true)
-      setIsLoadingScreen(true)
+      dispatch(setGlobalLoading(true))
       try {
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/product/${productId}`
         );
         setProduct(response.data.product); 
       } catch (error) {
-        console.dir(error);
+        dispatch(createAsyncToast(error.response.data))
       } finally{
         setIsLoadingProduct(false);
-        setIsLoadingScreen(false);
+        dispatch(setGlobalLoading(false))
       }
-    }, [setIsLoadingScreen]) 
+    }, [dispatch]) 
 
   useEffect(() => {
     if (product) {
@@ -144,8 +146,8 @@ function ProductDetailPage(){
                     <button
                       type="button"
                       className="btn btn-primary w-100 rounded-pill"
-                      onClick={() => addCart(product.id, selectedQuantity)}
-                      disabled={isLoading}
+                      onClick={() => dispatch(asyncAddCart({productId: product.id, qty: selectedQuantity}))}
+                      // disabled={actionLoading}
                     >
                       Add to Bag
                     </button>

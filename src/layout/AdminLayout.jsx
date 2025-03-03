@@ -1,18 +1,21 @@
 // 外部資源
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 // 內部資源
 import logo from "../assets/img/Strawberry cake icons created by Mihimihi - Flaticon.png";
-import LoadingScreen from "../components/LoadingScreen";
-import { LoadingScreenContext } from "../contexts/loadingScreenContext";
+import { useDispatch } from "react-redux";
+import { createAsyncToast } from "../redux/slice/toastSlice";
+// import { LoadingScreenContext } from "../contexts/loadingScreenContext";
 
 // 環境變數
-
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function AdminLayout() {
-  const { isLoadingScreen } = useContext(LoadingScreenContext);
+  // const { isLoadingScreen } = useContext(LoadingScreenContext);
+
+  const dispatch = useDispatch();
 
   const routes = [
     {
@@ -34,10 +37,17 @@ function AdminLayout() {
 
   const navigate = useNavigate();
 
-  const signout = () => {
+  const signout = async() => {
     // 清除 cookie
     document.cookie = `hexToken=;`
-    navigate('/admin-login')
+    try {
+      const url = `${BASE_URL}/logout`;
+      await axios.post(url);
+      navigate('/admin-login')
+    } catch (error) {
+      dispatch(createAsyncToast(error.response.data))
+    }
+    
   }
 
   // 取出 Token
@@ -55,7 +65,6 @@ function AdminLayout() {
 
   return (
     <>
-        <LoadingScreen isLoadingScreen={isLoadingScreen} />
         {
           token && (
             <>
