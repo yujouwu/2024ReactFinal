@@ -9,9 +9,10 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 const asyncGetCart = createAsyncThunk(
   'cart/asyncGetCart',
-  async function(payload, {dispatch}){
-    // setIsLoadingScreen(true)
-    dispatch(setGlobalLoading(true))
+  // { skipGlobalLoading = false } → 從傳入的物件中解構值，若不存在則預設為 false
+  // = {} → 當函式沒有傳參數時，提供預設值 {}，防止 undefined 錯誤
+  async function({ skipGlobalLoading = false} = {}, {dispatch}){
+    if(!skipGlobalLoading) dispatch(setGlobalLoading(true)); // 如果沒跳過，就啟動 globalLoading
     try {
       const url = `${BASE_URL}/api/${API_PATH}/cart`;
       const response = await axios.get(url);
@@ -19,8 +20,7 @@ const asyncGetCart = createAsyncThunk(
     } catch (error) {
       dispatch(createAsyncToast(error.response.data)) // {success: false, message: '您所查看的API不存在 >_<'}
     } finally{
-      // setIsLoadingScreen(false)
-      dispatch(setGlobalLoading(false))
+      if(!skipGlobalLoading) dispatch(setGlobalLoading(false));
     }
   }
 )
@@ -29,7 +29,7 @@ const asyncAddCart = createAsyncThunk(
   'cart/asyncAddCart',
   async function(payload, { dispatch }){
     const {productId, qty} = payload;
-    dispatch(setGlobalLoading(true))
+    dispatch(setActionLoading(true))
     try {
       const url = `${BASE_URL}/api/${API_PATH}/cart`;
       const data = {
@@ -39,13 +39,13 @@ const asyncAddCart = createAsyncThunk(
         }
       }
       const response = await axios.post(url, data);
-      dispatch(asyncGetCart());
+      await dispatch(asyncGetCart({skipGlobalLoading: true})); // 加上 await，確保購物車 更新完畢後 才顯示 toast，而不是非同步執行
       dispatch(createAsyncToast(response.data))
     } catch (error) {
       console.dir(error);
       dispatch(createAsyncToast(error.response.data))
     } finally {
-      dispatch(setGlobalLoading(false))
+      dispatch(setActionLoading(false))
     }
   }
 )

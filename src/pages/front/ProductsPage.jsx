@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // 內部 src 資源
 import Pagination from "../../components/Pagination";
@@ -16,7 +16,8 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 function ProductsPage() {
   const dispatch = useDispatch();
-
+  const { actionLoading } = useSelector((state) => state.loading)
+  
   const [products, setProducts] = useState([]);
 
   // Pagination
@@ -72,7 +73,7 @@ function ProductsPage() {
                   type="button"
                   className="btn btn-primary w-100 mt-auto rounded-pill"
                   onClick={() => dispatch(asyncAddCart({productId: product.id, qty: 1}))}
-                  // disabled={actionLoading}
+                  disabled={actionLoading}
                 >
                   Add to Bag
                 </button>

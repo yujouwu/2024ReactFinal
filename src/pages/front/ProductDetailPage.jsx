@@ -16,7 +16,7 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 function ProductDetailPage(){
   const dispatch = useDispatch();
-  // const { actionLoading } = useSelector((state) => state.loading)
+  const { actionLoading } = useSelector((state) => state.loading)
 
   const [product, setProduct] = useState({});
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
@@ -147,7 +147,7 @@ function ProductDetailPage(){
                       type="button"
                       className="btn btn-primary w-100 rounded-pill"
                       onClick={() => dispatch(asyncAddCart({productId: product.id, qty: selectedQuantity}))}
-                      // disabled={actionLoading}
+                      disabled={actionLoading}
                     >
                       Add to Bag
                     </button>
