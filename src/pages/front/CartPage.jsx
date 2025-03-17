@@ -18,7 +18,7 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 function CartPage(){
   const dispatch = useDispatch();
   const {basketQty, ...cart} = useSelector((state) => state.cart);
-
+  console.log('basketQty')
   // 更新商品數量
   const updateCart = async(cartId, productId, qty) => {
     dispatch(setGlobalLoading(true))
@@ -69,9 +69,10 @@ function CartPage(){
     }
   }
 
-  useEffect(() => {
-    dispatch(asyncGetCart());
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(asyncGetCart());
+  // }, [dispatch])
+
   return (
     <>
       {/* cart */}
