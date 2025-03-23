@@ -62,7 +62,7 @@ function AdminOrders() {
     }));
   };
 
-  const editOrder = async(orderId) => {
+  const editOrder = async() => {
     try {
       const url = `${BASE_URL}/api/${API_PATH}/admin/order/${modalData.id}`;
       const data = {
@@ -73,7 +73,7 @@ function AdminOrders() {
       const response = await axios.put(url, data);
       return response.data;
     } catch (error) {
-      console.dir(error)
+      return error?.response?.data;
     }
   }
 
@@ -81,10 +81,9 @@ function AdminOrders() {
     try {
       const url = `${BASE_URL}/api/${API_PATH}/admin/order/${modalData.id}`;
       const response = await axios.delete(url);
-      console.log('deleteOrder', response);
       return response.data;
     } catch (error) {
-      console.dir(error)
+      return error?.response?.data;
     }
   }
 
@@ -119,11 +118,10 @@ function AdminOrders() {
       try {
         const url = `${BASE_URL}/api/${API_PATH}/admin/orders?page=${page}`;
         const response = await axios.get(url);
-        console.log(response);
         setOrders(response.data.orders);
         setPagination(response.data.pagination);
       } catch (error) {
-        console.error(error);
+        alert(`取得訂單失敗: ${error.response.data.message}`);
       } finally {
         dispatch(setGlobalLoading(false));
       }
@@ -138,11 +136,6 @@ function AdminOrders() {
     orderModalRef.current = new Modal("#orderModal");
     getOrders();
   }, [getOrders]);
-
-  useEffect(() => {
-    console.log(modalData);
-    
-  }, [modalData])
 
   return (
     <>

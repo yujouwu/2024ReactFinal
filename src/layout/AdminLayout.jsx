@@ -82,7 +82,7 @@ function AdminLayout() {
                       className="img-fluid me-1"
                       width="30px"
                     />
-                    <p className="mb-0">Regis's Cakes - Admin Dashboard</p>
+                    <p className="mb-0">{`Regis's Cakes - Admin Dashboard`}</p>
                   </div>
                   {/* </a> */}
                   <button

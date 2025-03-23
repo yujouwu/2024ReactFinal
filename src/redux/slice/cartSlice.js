@@ -42,7 +42,6 @@ const asyncAddCart = createAsyncThunk(
       await dispatch(asyncGetCart({skipGlobalLoading: true})); // 加上 await，確保購物車 更新完畢後 才顯示 toast，而不是非同步執行
       dispatch(createAsyncToast(response.data))
     } catch (error) {
-      console.dir(error);
       dispatch(createAsyncToast(error.response.data))
     } finally {
       dispatch(setActionLoading(false))

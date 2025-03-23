@@ -1,6 +1,6 @@
-*, *::before, *::after{
-  // outline: 1px solid red;
-}
+// *, *::before, *::after{
+//   outline: 1px solid red;
+// }
 
 a{
   color: inherit;
@@ -22,6 +22,7 @@ input::-webkit-inner-spin-button {
 // Hide Arrows From Input Number
 /* Firefox */
 input[type=number] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 

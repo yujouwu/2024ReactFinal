@@ -39,7 +39,6 @@ function CheckoutPage() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    // console.log(data);
     const { message, ...user } = data;
     const userInfo = {
       data: {
@@ -51,19 +50,15 @@ function CheckoutPage() {
   });
 
   // 客戶購物 - 結帳
-  const [isOrderSubmitted, setIsOrderSubmitted] = useState(false);
   const checkout = async (data) => {
     dispatch(setGlobalLoading(true));
     try {
       const url = `${BASE_URL}/api/${API_PATH}/order`;
       const response = await axios.post(url, data);
       alert(response.data.message);
-      setIsOrderSubmitted(true);
       navigate(`/checkout/${response.data.orderId}`);
       getOrder(response.data.orderId);
     } catch (error) {
-      console.dir(error);
-      alert(error.response.data.message);
       dispatch(createAsyncToast(error.response.data))
     } finally {
       dispatch(setGlobalLoading(false));
@@ -95,12 +90,11 @@ function CheckoutPage() {
     try {
       const url = `${BASE_URL}/api/${API_PATH}/pay/${orderId}`;
       const response = await axios.post(url);
-      console.log(response.data);
       alert(response.data.message);
       navigate(`/ordersummary/${orderId}`)
       getOrder(orderId);
     } catch (error) {
-      console.error(error.response)
+      alert(error.response.data.message);
     }
   }
 

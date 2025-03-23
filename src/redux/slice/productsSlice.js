@@ -8,13 +8,14 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 const asyncGetProductsAll = createAsyncThunk(
   'products/asyncGetProductsAll',
-  async function(payload, {dispatch}){
+  // async function(payload, {dispatch}){
+  async function(){
     try {
       const url = `${BASE_URL}/api/${API_PATH}/products/all`;
       const response = await axios.get(url);
       return response.data.products
     } catch (error) {
-      console.error(error.response)
+      alert(`取得「所有」產品失敗: ${error.response.data.message}`);
     }
   }
 )

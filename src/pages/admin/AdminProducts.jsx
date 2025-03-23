@@ -157,7 +157,6 @@ function AdminProducts(){
         }));
       }
     } catch (error) {
-      console.dir(error);
       alert(error.response.data.message)
     } finally{
       e.target.value ='';
@@ -176,7 +175,6 @@ function AdminProducts(){
         setProducts(response.data.products);
         setPagination(response.data.pagination);
       } catch (error) {
-        console.dir(error);
         alert(`取得產品失敗: ${error.response.data.message}`);
         if (error.response.status === 401){
           navigate('/admin-login')
@@ -199,7 +197,6 @@ function AdminProducts(){
       });
       return response.data;
     } catch (error) {
-      console.dir(error);
       return error?.response?.data;
     }
   };
@@ -216,7 +213,6 @@ function AdminProducts(){
       });
       return response.data;
     } catch (error) {
-      console.dir(error);
       return error?.response?.data;
     }
   }

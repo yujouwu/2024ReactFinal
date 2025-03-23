@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import logo from '../../assets/img/Strawberry cake icons created by Mihimihi - Flaticon.png';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,7 +58,7 @@ function Navbar(){
         <div className="container">
           <NavLink className="navbar-brand d-flex align-items-center" to='/'>
             <img src={logo} alt="strawberry cake icons" className="img-fluid me-1" width="30px" />
-            Regis's
+            {`Regis's`}
           </NavLink>
           <div className="order-lg-1 d-flex align-items-center gap-2">
             <NavLink to='/wishlist' className="position-relative p-1">

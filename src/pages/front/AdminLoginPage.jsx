@@ -43,7 +43,6 @@ function AdminLoginPage(){
         navigate('/admin/products')
       }
     } catch (error) {
-      console.dir(error);
       alert(`登入失敗: ${error.response.data.error.message}`);
     } finally {
       dispatch(setGlobalLoading(false))
@@ -61,7 +60,6 @@ function AdminLoginPage(){
       const response = await axios.post(`${BASE_URL}/api/user/check`);
       return response.data.success;
     } catch (error) {
-      console.dir(error);
       alert(error.response.data.message);
       navigate('/admin-login')
     }

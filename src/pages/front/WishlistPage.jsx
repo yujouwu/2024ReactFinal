@@ -14,8 +14,6 @@ function WishlistPage(){
 
   const { actionLoading } = useSelector((state) => state.loading);
 
-  console.log(products);
-  
   return (
     <>
       <div className="container">

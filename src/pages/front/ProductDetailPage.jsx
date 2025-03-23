@@ -26,7 +26,6 @@ function ProductDetailPage(){
   const [mainImage, setMainImage] = useState(null);
 
   const { id: productId } = useParams();
-  // console.log(productId);
   
   // 取得單一產品資訊
   const getProduct = useCallback(
