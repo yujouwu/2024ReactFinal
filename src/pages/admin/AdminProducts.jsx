@@ -322,7 +322,7 @@ function AdminProducts(){
               </tbody>
             </table>
           </div>
-          <Pagination pagination={pagination} getProducts={getProducts}/>
+          <Pagination pagination={pagination} callApi={getProducts}/>
         </div>
       </div>
 

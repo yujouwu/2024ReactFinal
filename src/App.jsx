@@ -11,9 +11,11 @@ function App() {
   
   return (
     <>
-      <Toast />
-      <Loading />
-      <RouterProvider router={routes}/>
+      <div className="d-flex flex-column min-vh-100 ">
+        <Toast />
+        <Loading />
+        <RouterProvider router={routes}/>
+      </div>
     </>
   );
 }

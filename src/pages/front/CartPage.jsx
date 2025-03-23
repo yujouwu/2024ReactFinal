@@ -1,5 +1,4 @@
 // 外部 node_modules 資源
-import { useEffect} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -75,8 +74,8 @@ function CartPage(){
 
   return (
     <>
-      {/* cart */}
-      <div className="container">
+      <div className="container py-10">       
+        {/* cart */}
         {
           cart?.carts?.length > 0 ? (
             <div className="row">

@@ -1,10 +1,10 @@
 // 外部 node_modules 資源
 import PropTypes from 'prop-types';
 
-function Pagination({pagination, getProducts}){
+function Pagination({pagination, callApi}){
   const handlePageChange = (e, page) => {
     e.preventDefault();
-    getProducts(page)
+    callApi(page)
   }
 
   return (
@@ -37,6 +37,6 @@ Pagination.propTypes = {
     has_pre: PropTypes.bool,
     has_next: PropTypes.bool,
   }).isRequired,
-  getProducts: PropTypes.func,
+  callApi: PropTypes.func,
 }
 export default Pagination

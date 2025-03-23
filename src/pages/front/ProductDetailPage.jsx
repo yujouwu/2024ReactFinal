@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { asyncAddCart } from "../../redux/slice/cartSlice";
 import { setGlobalLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
+import { toggleWishlist } from "../../redux/slice/wishlistSlice";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -17,6 +18,7 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 function ProductDetailPage(){
   const dispatch = useDispatch();
   const { actionLoading } = useSelector((state) => state.loading)
+  const wishlist = useSelector((state) => state.wishlist.list);
 
   const [product, setProduct] = useState({});
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
@@ -100,10 +102,15 @@ function ProductDetailPage(){
                     <span className="fs-4 fw-bold me-2">
                       £{product.price}
                     </span>
-                    /
-                    <del className="text-secondary">
-                      {product.origin_price}
-                    </del>
+                    {
+                      product.price !== product.origin_price && (
+                        <>
+                          / <del className="text-secondary">
+                            {product.origin_price}
+                          </del>
+                        </>
+                      )
+                    }
                   </div>
                   <div className="d-flex align-items-center gap-3">
                     <div className="d-flex">
@@ -150,6 +157,19 @@ function ProductDetailPage(){
                       disabled={actionLoading}
                     >
                       Add to Bag
+                    </button>
+                    <button
+                      type="button"
+                      className="btn bg-primary bg-opacity-10 rounded-circle border-0"
+                      onClick={() => dispatch(toggleWishlist(product.id))}
+                    >
+                      <i
+                        className={`bi text-primary-dark ${
+                          wishlist[product.id]
+                            ? "bi-suit-heart-fill"
+                            : "bi-suit-heart"
+                        }`}
+                      ></i>
                     </button>
                   </div>
                 </section>

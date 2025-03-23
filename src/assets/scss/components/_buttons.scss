@@ -1,8 +1,10 @@
-.btn-primary{
+.btn-primary-light{
   &:hover{
     background-color: $red-200;
+    border-color: $red-200;
   }
   &:active{
     background-color: $red-200 !important;
+    border-color: $red-200 !important;
   }
 }

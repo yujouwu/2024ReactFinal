@@ -14,6 +14,8 @@ import AdminProducts from "../pages/admin/AdminProducts";
 import AdminOrders from "../pages/admin/AdminOrders";
 import AdminCoupons from "../pages/admin/AdminCoupons";
 import NotFoundPage from "../pages/front/NotFoundPage";
+import WishlistPage from "../pages/front/WishlistPage";
+import StoresPage from "../pages/front/StoresPage";
 
 const routes = createHashRouter([
   {
@@ -37,11 +39,23 @@ const routes = createHashRouter([
         element: <AboutPage />
       },
       {
+        path: 'stores',
+        element: <StoresPage />
+      },
+      {
+        path: 'wishlist',
+        element: <WishlistPage />
+      },
+      {
         path: 'cart',
         element: <CartPage />
       },
       {
         path: 'checkout',
+        element: <CheckoutPage />
+      },
+      {
+        path: 'checkout/:orderId',
         element: <CheckoutPage />
       },
       {

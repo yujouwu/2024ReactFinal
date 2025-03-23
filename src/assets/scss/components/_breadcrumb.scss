@@ -1,0 +1,7 @@
+.breadcrumb-item{
+  color: $primary;
+  &.active{
+    color: $primary-dark;
+    font-weight: 700;
+  }
+}
