@@ -2,16 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const loadWishlist = () => {
   const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
-  return savedWishlist || {}
+  return savedWishlist || { list: {}, qty: 0}
 }
 const savedWishlist = loadWishlist();
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
-  initialState: {
-    list: savedWishlist.list,
-    qty: savedWishlist.qty
-  },
+  initialState: savedWishlist,
   reducers: {
     toggleWishlist(state, action) {
       const productId = action.payload;

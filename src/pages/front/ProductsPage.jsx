@@ -133,7 +133,7 @@ function ProductsPage() {
                   >
                     <i
                       className={`bi text-primary-dark ${
-                        wishlist[product.id]
+                         wishlist[product.id]
                           ? "bi-suit-heart-fill"
                           : "bi-suit-heart"
                       }`}

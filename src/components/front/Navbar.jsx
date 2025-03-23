@@ -8,7 +8,6 @@ import { asyncGetCart } from '../../redux/slice/cartSlice';
 function Navbar(){
   const [scrolled, setScrolled] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(false);
-  const location = useLocation();
 
   const { basketQty } = useSelector((state) => state.cart);
   const wishlistQty = useSelector((state) => state.wishlist.qty);
