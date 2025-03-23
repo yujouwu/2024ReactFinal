@@ -7,5 +7,17 @@ $utilities: map-merge(
         responsive: true
       ),
     ),
+    "border-top": map-merge(
+      map-get($utilities, "border-top"),
+      (
+        responsive: true
+      ),
+    ),
+    "width": map-merge(
+      map-get($utilities, "width"),
+      (
+        responsive: true
+      ),
+    ),
   )
 );

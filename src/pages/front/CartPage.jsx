@@ -68,10 +68,6 @@ function CartPage(){
     }
   }
 
-  // useEffect(() => {
-  //   dispatch(asyncGetCart());
-  // }, [dispatch])
-
   return (
     <>
       <div className="container py-10">       
@@ -179,7 +175,7 @@ function CartPage(){
                 ))}
               </div>
               <div className="col-lg-3">
-                <p className="h4">Order Summary</p>
+                <p className="h4 py-3">Order Summary</p>
                 <div className="border p-3">
                   <div>
                     <div className="d-flex justify-content-between align-items-center">

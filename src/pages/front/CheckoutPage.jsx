@@ -96,6 +96,8 @@ function CheckoutPage() {
       const url = `${BASE_URL}/api/${API_PATH}/pay/${orderId}`;
       const response = await axios.post(url);
       console.log(response.data);
+      alert(response.data.message);
+      navigate(`/ordersummary/${orderId}`)
       getOrder(orderId);
     } catch (error) {
       console.error(error.response)
@@ -118,7 +120,7 @@ function CheckoutPage() {
       ) : (
         !orderId && ( 
           // {/* order form */}
-          <div className="container">
+          <div className="container py-10">
             <p className="h4">Checkout</p>
             <div className="row">
               <div className="col-lg-9">
@@ -200,7 +202,7 @@ function CheckoutPage() {
                 </form>
               </div>
               <div className="col-lg-3">
-                <div className="border">
+                <div className="border mt-8 mt-lg-0">
                   <p className="fs-6 border-bottom p-3">
                     Summary{" "}
                     <span>
@@ -259,7 +261,7 @@ function CheckoutPage() {
       {
         orderId && (
           <>
-            <div className="container">
+            <div className="container py-10">
               <h3>Order Summary</h3>
               <ul className="list-unstyled d-flex gap-10">
                 <li>
@@ -268,7 +270,7 @@ function CheckoutPage() {
                 </li>
                 <li>
                   <p>Order Number</p>
-                  <span>{orderData.id}</span>
+                  <span className="text-break">{orderData.id}</span>
                 </li>
               </ul>
               <div className="row">
@@ -308,58 +310,71 @@ function CheckoutPage() {
                     <li className="row mb-3">
                       <p className="col-sm-3">Payment</p>
                       <div className="col-sm-9">
-                        <p className={`${orderData.is_paid ? "text-success" : "text-danger"}`}>{orderData.is_paid ? "paid" : "unpaid"}</p>
+                        {
+                          orderData.is_paid ? (
+                            <p className="text-success">
+                              Paid
+                              <i className="bi bi-check-circle fs-5 ms-2"></i>
+                            </p>
+                          ) : (
+                            <p className="text-danger">
+                              Unpaid
+                            </p>
+                          )
+                        }
                       </div>
                     </li>
-                  
                   </ul>
-                  <button type="button" className={`btn btn-primary-light w-100 mt-6 ${orderData.is_paid ? "disabled" : ""}`} onClick={() => pay(orderData.id)}>{orderData.is_paid ? "Payment Completed" : "Pay now"}</button>
+                  <button type="button" className="btn btn-primary-light w-100 mt-0 mt-lg-6" onClick={() => pay(orderData.id)}>Pay now</button>
+                  {/* <button type="button" className={`btn btn-primary-light w-100 mt-0 mt-lg-6 ${orderData.is_paid ? "disabled" : ""}`} onClick={() => pay(orderData.id)}>{orderData.is_paid ? "Payment Completed" : "Pay now"}</button> */}
                 </div>
                 <div className="col-lg-6">
-                  <p>Items</p>
-                  <div className="border">
-                    <p className="fs-6 border-bottom p-3">Summary <span>
-                        ({orderDataProducts.reduce((sum, item) => sum + item.qty, 0)}{' '}
-                          {orderDataProducts.reduce((sum, item) => sum + item.qty, 0) === 1 ? 'item' : 'items'}
-                        )
-                      </span>
-                    </p>
-                    <ul className="list-unstyled border-bottom px-3 mb-0">
-                      {
-                        orderDataProducts.map((item, index) => (
-                          <li key={item.id} className={`d-flex ${index === orderDataProducts.length - 1 ? '' : 'border-bottom'} py-3 gap-3`}>
-                            <div className="w-25">
-                              <img
-                                src={item.product.imageUrl}
-                                alt={item.product.title}
-                                className="img-fluid"
-                              />
-                            </div>
-                            <div className="w-75 d-flex flex-column">
-                              <p>{item.product.title}</p>
-                              <div className="d-flex justify-content-between">
-                                <p>Quantity：{item.qty}</p>
-                                <p>£{item.final_total}</p>
+                  <div className="border-top border-top-lg-0 mt-6 pt-4 mt-lg-0 pt-lg-0">
+                    <p>Items</p>
+                    <div className="border">
+                      <p className="fs-6 border-bottom p-3">Summary <span>
+                          ({orderDataProducts.reduce((sum, item) => sum + item.qty, 0)}{' '}
+                            {orderDataProducts.reduce((sum, item) => sum + item.qty, 0) === 1 ? 'item' : 'items'}
+                          )
+                        </span>
+                      </p>
+                      <ul className="list-unstyled border-bottom px-3 mb-0">
+                        {
+                          orderDataProducts.map((item, index) => (
+                            <li key={item.id} className={`d-flex ${index === orderDataProducts.length - 1 ? '' : 'border-bottom'} py-3 gap-3`}>
+                              <div className="w-25">
+                                <img
+                                  src={item.product.imageUrl}
+                                  alt={item.product.title}
+                                  className="img-fluid"
+                                />
                               </div>
-                            </div>
-                          </li>
-                        ))
-                      }
-                    </ul>
-                    <div className="p-3">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <p>
-                          Subtotal <span>
-                            ({orderDataProducts.reduce((sum, item) => sum + item.qty, 0)}{' '}
-                              {orderDataProducts.reduce((sum, item) => sum + item.qty, 0) === 1 ? 'item' : 'items'}
-                            )
-                          </span>
-                        </p>
-                        <span>£{orderData.total}</span>
-                      </div>
-                      <p>Delivery fee</p>
-                      <div className="border-top mt-3 pt-3">
-                        <p className="h4 d-flex align-items-center justify-content-between">Total <span>£{orderData.total}</span></p>
+                              <div className="w-75 d-flex flex-column">
+                                <p>{item.product.title}</p>
+                                <div className="d-flex justify-content-between">
+                                  <p>Quantity：{item.qty}</p>
+                                  <p>£{item.final_total}</p>
+                                </div>
+                              </div>
+                            </li>
+                          ))
+                        }
+                      </ul>
+                      <div className="p-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <p>
+                            Subtotal <span>
+                              ({orderDataProducts.reduce((sum, item) => sum + item.qty, 0)}{' '}
+                                {orderDataProducts.reduce((sum, item) => sum + item.qty, 0) === 1 ? 'item' : 'items'}
+                              )
+                            </span>
+                          </p>
+                          <span>£{orderData.total}</span>
+                        </div>
+                        <p>Delivery fee</p>
+                        <div className="border-top mt-3 pt-3">
+                          <p className="h4 d-flex align-items-center justify-content-between">Total <span>£{orderData.total}</span></p>
+                        </div>
                       </div>
                     </div>
                   </div>

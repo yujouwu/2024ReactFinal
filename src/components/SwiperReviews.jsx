@@ -95,7 +95,7 @@ function SwiperReviews(){
             <Swiper
               spaceBetween={24}
               slidesPerView={1.2}
-              onSlideChange={() => console.log("slide change")}
+              // onSlideChange={() => console.log("slide change")}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               className="h-100 pb-8"
               modules={[Navigation, Pagination]}

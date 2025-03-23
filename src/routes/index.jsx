@@ -8,7 +8,7 @@ import AboutPage from "../pages/front/AboutPage";
 import CartPage from "../pages/front/CartPage";
 import CheckoutPage from "../pages/front/CheckoutPage";
 import ProductDetailPage from "../pages/front/ProductDetailPage";
-import SuccessPage from "../pages/front/SuccessPage";
+import OrdersummaryPage from "../pages/front/OrdersummaryPage";
 import AdminLayout from "../layout/AdminLayout";
 import AdminProducts from "../pages/admin/AdminProducts";
 import AdminOrders from "../pages/admin/AdminOrders";
@@ -59,8 +59,8 @@ const routes = createHashRouter([
         element: <CheckoutPage />
       },
       {
-        path: 'success/:orderId',
-        element: <SuccessPage />
+        path: 'ordersummary/:orderId',
+        element: <OrdersummaryPage />
       },
       {
         path: 'admin-login',
