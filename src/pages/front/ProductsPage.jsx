@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination";
 import { asyncAddCart } from "../../redux/slice/cartSlice";
 import { setGlobalLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
-import { toggleWishlist } from "../../redux/slice/wishlistSlice";
+import { asyncToggleWishlist } from "../../redux/slice/wishlistSlice";
 import productsBanner from "../../assets/img/banner/productsBanner-1920.webp";
 import Banner from "../../components/front/Banner";
 
@@ -129,7 +129,7 @@ function ProductsPage() {
                   <button
                     type="button"
                     className="btn bg-primary bg-opacity-10 rounded-circle border-0"
-                    onClick={() => dispatch(toggleWishlist(product.id))}
+                    onClick={() => dispatch(asyncToggleWishlist(product.id))}
                   >
                     <i
                       className={`bi text-primary-dark ${

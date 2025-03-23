@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncToast } from "./toastSlice";
 
 const loadWishlist = () => {
   const savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
@@ -19,6 +20,21 @@ const wishlistSlice = createSlice({
     }
   }
 })
-
+const asyncToggleWishlist = createAsyncThunk(
+  'wishlist/asyncToggleWishlist',
+  async function (payload, { getState, dispatch }) {
+    try {
+      const wishlist = getState().wishlist.list;
+      dispatch(toggleWishlist(payload))
+      dispatch(createAsyncToast({
+        success: true,
+        message: wishlist[payload] ? '成功將商品移除願望清單' : '成功將商品加入願望清單',
+      }))
+    } catch {
+      dispatch(createAsyncToast({ success: false, message: '願望清單操作失敗'}))
+    }
+  }
+)
+export { asyncToggleWishlist };
 export const { toggleWishlist } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

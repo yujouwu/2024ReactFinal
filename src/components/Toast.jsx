@@ -2,11 +2,12 @@ import { useSelector } from "react-redux"
 
 
 function Toast(){
-  const toasts = useSelector((state) => state.toast)
+  const toasts = useSelector((state) => state.toast);
+  
   return (
     <>
       <div aria-live="polite" aria-atomic="true" className="container position-relative">
-        <div className="toast-container end-0 p-3" style={{top: '60px'}}>
+        <div className="toast-container position-fixed  end-0 p-3" style={{top: '30px'}}>
           {
             toasts.map((toast) => (
               <div key={toast.id} className="toast show" role="alert" aria-live="assertive" aria-atomic="true">
