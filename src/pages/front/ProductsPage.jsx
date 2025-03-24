@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 // 內部 src 資源
 import Pagination from "../../components/Pagination";
 import { asyncAddCart } from "../../redux/slice/cartSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
 import { asyncToggleWishlist } from "../../redux/slice/wishlistSlice";
 import productsBanner from "../../assets/img/banner/productsBanner-1920.webp";
@@ -44,7 +44,7 @@ function ProductsPage() {
   // 取得產品列表
   const getProducts = useCallback(
     async (page = 1) => {
-      dispatch(setGlobalLoading(true));
+      dispatch(asyncSetLoading(['globalLoading', true]));
       try {
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/products?page=${page}&category=${selectedCategory === "All" ? "" : selectedCategory}`
@@ -54,7 +54,7 @@ function ProductsPage() {
       } catch (error) {
         dispatch(createAsyncToast(error.response.data));
       } finally {
-        dispatch(setGlobalLoading(false));
+        dispatch(asyncSetLoading(['globalLoading', false]));
       }
     },
     [dispatch, selectedCategory]

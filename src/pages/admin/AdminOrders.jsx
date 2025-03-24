@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 import Pagination from "../../components/Pagination";
 import { Modal } from "bootstrap";
 import OrderModal from "../../components/admin/OrderModal";
@@ -114,7 +114,7 @@ function AdminOrders() {
   const [pagination, setPagination] = useState({});
   const getOrders = useCallback(
     async (page = 1) => {
-      dispatch(setGlobalLoading(true));
+      dispatch(asyncSetLoading(['globalLoading', true]))
       try {
         const url = `${BASE_URL}/api/${API_PATH}/admin/orders?page=${page}`;
         const response = await axios.get(url);
@@ -123,7 +123,7 @@ function AdminOrders() {
       } catch (error) {
         alert(`取得訂單失敗: ${error.response.data.message}`);
       } finally {
-        dispatch(setGlobalLoading(false));
+        dispatch(asyncSetLoading(['globalLoading', false]))
       }
     },
     [dispatch]

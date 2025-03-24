@@ -11,9 +11,8 @@ import Textarea from "../../components/form/Textarea";
 import CheckboxRadio from "../../components/form/CheckboxRadio";
 import EmptyBasket from "../../components/front/emptyBasket";
 import { asyncGetCart } from "../../redux/slice/cartSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
-
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -51,7 +50,7 @@ function CheckoutPage() {
 
   // 客戶購物 - 結帳
   const checkout = async (data) => {
-    dispatch(setGlobalLoading(true));
+    dispatch(asyncSetLoading(['globalLoading', true]));
     try {
       const url = `${BASE_URL}/api/${API_PATH}/order`;
       const response = await axios.post(url, data);
@@ -61,7 +60,7 @@ function CheckoutPage() {
     } catch (error) {
       dispatch(createAsyncToast(error.response.data))
     } finally {
-      dispatch(setGlobalLoading(false));
+      dispatch(asyncSetLoading(['globalLoading', false]))
     }
   };
 
@@ -71,7 +70,7 @@ function CheckoutPage() {
   const [orderDataProducts, setOrderDataProducts] = useState([]);
   const getOrder = useCallback(
     async(orderId) => {
-      dispatch(setGlobalLoading(true))
+      dispatch(asyncSetLoading(['globalLoading', true]));
       try {
         const url = `${BASE_URL}/api/${API_PATH}/order/${orderId}`;
         const response = await axios.get(url);
@@ -81,7 +80,7 @@ function CheckoutPage() {
       } catch (error) {
         dispatch(createAsyncToast(error.response.data))
       } finally {
-        dispatch(setGlobalLoading(false))
+        dispatch(asyncSetLoading(['globalLoading', false]));
       }
     }, [dispatch]) 
 

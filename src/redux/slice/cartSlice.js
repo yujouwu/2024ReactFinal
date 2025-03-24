@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createAsyncToast } from "./toastSlice";
-import { setActionLoading, setGlobalLoading } from "./loadingSlice";
+import { asyncSetLoading, setActionLoading } from "./loadingSlice";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -12,7 +12,7 @@ const asyncGetCart = createAsyncThunk(
   // { skipGlobalLoading = false } → 從傳入的物件中解構值，若不存在則預設為 false
   // = {} → 當函式沒有傳參數時，提供預設值 {}，防止 undefined 錯誤
   async function({ skipGlobalLoading = false} = {}, {dispatch}){
-    if(!skipGlobalLoading) dispatch(setGlobalLoading(true)); // 如果沒跳過，就啟動 globalLoading
+    if(!skipGlobalLoading) dispatch(asyncSetLoading(['globalLoading', true])); // 如果沒跳過，就啟動 globalLoading
     try {
       const url = `${BASE_URL}/api/${API_PATH}/cart`;
       const response = await axios.get(url);
@@ -20,7 +20,7 @@ const asyncGetCart = createAsyncThunk(
     } catch (error) {
       dispatch(createAsyncToast(error.response.data)) // {success: false, message: '您所查看的API不存在 >_<'}
     } finally{
-      if(!skipGlobalLoading) dispatch(setGlobalLoading(false));
+      if(!skipGlobalLoading) dispatch(asyncSetLoading(['globalLoading', false]));
     }
   }
 )

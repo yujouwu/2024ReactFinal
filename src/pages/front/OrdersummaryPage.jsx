@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { asyncGetCart } from "../../redux/slice/cartSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
 
 // 內部資源
@@ -23,7 +23,7 @@ function OrdersummaryPage(){
 
   const getOrder = useCallback(
     async(orderId) => {
-      dispatch(setGlobalLoading(true))
+      dispatch(asyncSetLoading(['globalLoading', true]));
       try {
         const url = `${BASE_URL}/api/${API_PATH}/order/${orderId}`;
         const response = await axios.get(url);
@@ -33,7 +33,7 @@ function OrdersummaryPage(){
       } catch (error) {
         dispatch(createAsyncToast(error.response.data))
       } finally {
-        dispatch(setGlobalLoading(false))
+        dispatch(asyncSetLoading(['globalLoading', false]));
       }
     }, [dispatch]) 
 

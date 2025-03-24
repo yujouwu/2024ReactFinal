@@ -8,7 +8,8 @@ import EmptyBasket from "../../components/front/emptyBasket";
 import { useDispatch, useSelector } from "react-redux";
 import { asyncGetCart } from "../../redux/slice/cartSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
+import { useEffect } from "react";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -20,7 +21,7 @@ function CartPage(){
   
   // 更新商品數量
   const updateCart = async(cartId, productId, qty) => {
-    dispatch(setGlobalLoading(true))
+    dispatch(asyncSetLoading(['globalLoading', true]))
     try {
       qty = Number(qty);
       if (isNaN(qty) || qty < 1) qty = 1;
@@ -36,13 +37,13 @@ function CartPage(){
     } catch (error) {
       dispatch(createAsyncToast(error.response.data))
     } finally{
-      dispatch(setGlobalLoading(false))
+      dispatch(asyncSetLoading(['globalLoading', false]))
     }
   }
 
   // 刪除購物車 (全部)
   const deleteCartAll = async() => {
-    dispatch(setGlobalLoading(true))
+    dispatch(asyncSetLoading(['globalLoading', true]))
     try {
       const url = `${BASE_URL}/api/${API_PATH}/carts`;
       await axios.delete(url);
@@ -50,13 +51,13 @@ function CartPage(){
     } catch (error) {
       dispatch(createAsyncToast(error.response.data))
     } finally{
-      dispatch(setGlobalLoading(false))
+      dispatch(asyncSetLoading(['globalLoading', false]))
     }
   }
 
   // 刪除購物車 (單一)
   const deleteCartOne = async(cartId) => {
-    dispatch(setGlobalLoading(true))
+    dispatch(asyncSetLoading(['globalLoading', true]))
     try {
       const url = `${BASE_URL}/api/${API_PATH}/cart/${cartId}`;
       await axios.delete(url);
@@ -64,9 +65,16 @@ function CartPage(){
     } catch (error) {
       dispatch(createAsyncToast(error.response.data))
     } finally{
-      dispatch(setGlobalLoading(false))
+      dispatch(asyncSetLoading(['globalLoading', false]))
     }
   }
+
+  useEffect(() => {
+    dispatch(asyncSetLoading(['globalLoading', true]));
+    setTimeout(() => {
+      dispatch(asyncSetLoading(['globalLoading', false]));
+    }, 0)
+  }, [dispatch])
 
   return (
     <>

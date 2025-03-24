@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 // 內部 src 資源
 import { useDispatch, useSelector } from "react-redux";
 import { asyncAddCart } from "../../redux/slice/cartSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
 import { asyncToggleWishlist } from "../../redux/slice/wishlistSlice";
 
@@ -31,7 +31,7 @@ function ProductDetailPage(){
   const getProduct = useCallback(
     async (productId) => {
       setIsLoadingProduct(true)
-      dispatch(setGlobalLoading(true))
+      dispatch(asyncSetLoading(['globalLoading', true]));
       try {
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/product/${productId}`
@@ -41,7 +41,7 @@ function ProductDetailPage(){
         dispatch(createAsyncToast(error.response.data))
       } finally{
         setIsLoadingProduct(false);
-        dispatch(setGlobalLoading(false))
+        dispatch(asyncSetLoading(['globalLoading', false]));
       }
     }, [dispatch]) 
 

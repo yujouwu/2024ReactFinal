@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import Pagination from '../../components/Pagination';
 import ProductModal from "../../components/ProductModal";
 import { createAsyncToast } from "../../redux/slice/toastSlice";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 
 // 環境變數
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -162,12 +162,12 @@ function AdminProducts(){
       e.target.value ='';
     }
   }
-
+  
   // 產品 API 相關
   const [products, setProducts] = useState([]);
   const getProducts = useCallback(
     async (page = 1) => {
-      dispatch(setGlobalLoading(true));
+      dispatch(asyncSetLoading(['globalLoading', true]))
       try {
         const response = await axios.get(
           `${BASE_URL}/api/${API_PATH}/admin/products?page=${page}`
@@ -180,7 +180,8 @@ function AdminProducts(){
           navigate('/admin-login')
         }
       } finally {
-        dispatch(setGlobalLoading(false));
+        dispatch(asyncSetLoading(['globalLoading', false]))
+        
       }
     }, [navigate, dispatch])
   

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import Input from "../../components/form/Input";
 import { useDispatch } from "react-redux";
-import { setGlobalLoading } from "../../redux/slice/loadingSlice";
+import { asyncSetLoading } from "../../redux/slice/loadingSlice";
 
 // 內部 src 資源
 
@@ -27,10 +27,10 @@ function AdminLoginPage(){
     },
     mode: 'onTouched'
   })
-
+  
   const handleAdminLogin = async (data) => {
     // e.preventDefault();
-    dispatch(setGlobalLoading(true))
+    dispatch(asyncSetLoading(['globalLoading', true]))
     try {
       const response = await axios.post(`${BASE_URL}/admin/signin`, data);
       const { expired, token } = response.data;
@@ -45,7 +45,7 @@ function AdminLoginPage(){
     } catch (error) {
       alert(`登入失敗: ${error.response.data.error.message}`);
     } finally {
-      dispatch(setGlobalLoading(false))
+      dispatch(asyncSetLoading(['globalLoading', false]))
     }
   };
 
