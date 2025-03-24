@@ -3,6 +3,8 @@ import { asyncAddCart } from "../../redux/slice/cartSlice";
 import { asyncToggleWishlist } from "../../redux/slice/wishlistSlice";
 import { Link } from "react-router-dom";
 
+import wishlistBanner from "../../assets/img/banner/wishlistBanner-1920.webp";
+import Banner from "../../components/front/Banner";
 
 function WishlistPage(){
   const products = useSelector((state) => state.products);
@@ -17,6 +19,7 @@ function WishlistPage(){
 
   return (
     <>
+      <Banner imageUrl={wishlistBanner} />
       <div className="container py-10 text-center">
         <div className="mb-5">
           <h2>Wishlist</h2>

@@ -1,4 +1,4 @@
-import aboutBanner from "../../assets/img/about/about-1920.webp";
+import aboutBanner from "../../assets/img/banner/aboutBanner-1920.webp";
 import passionImg from "../../assets/img/about/about-passion.jpg";
 import storyImg from "../../assets/img/about/about-story.jpg";
 import Banner from "../../components/front/Banner";
